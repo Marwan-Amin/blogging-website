@@ -12,16 +12,29 @@ class PostRepository implements PostRepositoryInterface
 {
     public function index()
     {
-        return view('home',[
-            'posts' => Post::all(), 
-            'users' => User::all()
+        $posts = Post::paginate(2);
+        $viewsCount =null;
+
+        return view('home', [
+            'posts' => $posts,
+            'users' => User::paginate(5),
+        ]);
+    }
+
+    public function topViews()
+    {
+        $posts = Post::orderByViews()->paginate(2);
+
+        return view('home', [
+            'posts' => $posts,
+            'users' => User::paginate(5),
         ]);
     }
 
     public function store(Request $request)
     {
-        $image = $request->post_image?Storage::putfile('blog_images', $request->file('post_image')):'null';
-        
+        $image = $request->post_image ? Storage::putfile('blog_images', $request->file('post_image')) : 'null';
+
         Post::create([
             'body' => $request->body,
             'blog_image' => $image,
@@ -44,7 +57,19 @@ class PostRepository implements PostRepositoryInterface
         Post::where('id', $post_id)->update([
             'body' => $request->body,
             'blog_image' => $request->post_image
-            ]);
+        ]);
         return redirect()->route('index');
+    }
+
+    public function show($id)
+    {
+        $post = Post::find($id);
+        $expiresAt = now()->addHours(24);
+        views($post)->cooldown($expiresAt)->record();
+        $viewsCount = views($post)->count();
+        return view('post', [
+            'post' => $post,
+            'views' => $viewsCount
+        ]);
     }
 }

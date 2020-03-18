@@ -44,7 +44,7 @@
                     </a>
                 </li>
                 @endforeach
-
+                {{ $users->links() }}
             </ul>
             <!-- /All Users -->
         </div>
@@ -82,7 +82,13 @@
             </div>
             <!-- /Create Post -->
             @endguest
-
+            @isset($posts)
+            <div class="btn-group mb-5" role="group" aria-label="Basic example">
+            <a  href="/posts/topViews" class="btn btn-secondary">Top views</a>
+            <a  href="/posts/recommended" class="btn btn-secondary">Recommended</a>
+            <a  href="/posts/topVoted" class="btn btn-secondary">Top voted</a>
+            </div>
+            @endisset
             @foreach($posts as $post)
             <!-- User Posts -->
             <div class="panel panel-default user-post-panel">
@@ -168,60 +174,31 @@
 
                         <!-- /Post control -->
                     </div>
-
-                </div>
-                <!-- Post content-->
-                <div class="panel-body">
-                    <img src="{{asset($post->blog_image)}}" class="img img-responsive">
-                    <br>
-                    <p>
-                        {{$post->body}}
-                    </p>
-                </div>
-                <!-- /Post content-->
-
-                <div class="panel-footer">
-                    <!-- Like Button -->
-                    <span class="like-btn">
-                        <small class="text-muted likes">20</small>
-                        <a href="#" class="btn-btn-primary">
-                            <i class="fa fa-thumbs-o-up fa-lg" aria-hidden="true"></i>
-                        </a>
-                    </span>
-                    <!-- /Like Button -->
-
-                    <!-- Dislike Button -->
-                    <span class="like-btn">
-                        <small class="text-muted likes">3</small>
-                        <a href="#" class="btn-btn-primary">
-                            <i class="fa fa-thumbs-o-down fa-lg" aria-hidden="true"></i>
-                        </a>
-                    </span>
-                    <hr>
-                    <!-- Dislike comment form -->
-
-                    <!-- Add comment form -->
-                    <div class="media">
-                        <div class="media-left">
-                            <a href="#">
-                                <img class="media-object img img-circle"  width="50px" src="https://www.shareicon.net/data/2016/05/24/770117_people_512x512.png" alt="">
-                            </a>
-                        </div>
-                        <div class="media-body">
-                            <form action="">
-                                <textarea name="" id="" class="form-control"></textarea>
-                                <br>
-                                <button class="btn btn-primary pull-right">Comment</button>
-                            </form>
-                        </div>
                     </div>
-
+<!-- Post content-->
+<div class="panel-body">
+    <img src="{{asset($post->blog_image)}}" class="img img-responsive">
+    <br>
+    <p>
+        {{$post->body}}
+    </p>
+    <a href="/post/{{$post->id}}" class="btn btn-success">Show post</a>
+    
+    <p>{{views($post)->count()}}</p>
+</div>
+<!-- /Post content-->
 
                 </div>
+                @endforeach 
+{{ $posts->links() }}
+
             </div>
+            
             <!-- /User Posts -->
-            @endforeach
+            
+
         </div>
+        
 
     </div>
 </div>

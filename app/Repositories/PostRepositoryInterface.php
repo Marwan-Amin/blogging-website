@@ -10,5 +10,7 @@ interface PostRepositoryInterface
     public function store(Request $request);
     public function delete($id);
     public function update($id, Request $request);
+    public function show($id);
+    public function topViews();
 
 }

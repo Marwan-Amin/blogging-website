@@ -32,4 +32,14 @@ class PostController extends Controller
     {
         return $this->post->update($id, $request);
     }
+
+    public function show($id)
+    {
+        return $this->post->show($id);
+    }
+
+    public function topViews()
+    {
+        return $this->post->topViews();
+    }
 }
