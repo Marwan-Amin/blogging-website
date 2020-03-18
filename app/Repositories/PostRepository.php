@@ -17,23 +17,41 @@ class PostRepository implements PostRepositoryInterface
 
         return view('home', [
             'posts' => $posts,
-            'users' => User::paginate(5),
+            'users' => User::all(),
         ]);
     }
 
     public function topViews()
     {
-        $posts = Post::orderByViews()->paginate(2);
+        $posts = Post::paginate(2);
 
         return view('home', [
             'posts' => $posts,
-            'users' => User::paginate(5),
+            'users' => User::all(),
+        ]);
+    }
+
+    public function topVotes()
+    {
+        // dd(true);
+        // $allPosts = Post::paginate(2);
+        // dd($allPosts);
+        // $posts = $allPosts->upvoters()->orderByDesc('id')->get();
+        // dd($posts);
+        $posts = Post::paginate(2);
+        return view('home', [
+            'posts' => $posts,
+            'users' => User::all(),
         ]);
     }
 
     public function store(Request $request)
     {
-        $image = $request->post_image ? Storage::putfile('blog_images', $request->file('post_image')) : 'null';
+        $image='';
+        if(request()->post_image){
+            $image =  Storage::putfile('blog_images', $request->file('post_image'));
+            $request->post_image->move(public_path('blog_images'), $image);
+        } 
 
         Post::create([
             'body' => $request->body,
@@ -66,10 +84,9 @@ class PostRepository implements PostRepositoryInterface
         $post = Post::find($id);
         $expiresAt = now()->addHours(24);
         views($post)->cooldown($expiresAt)->record();
-        $viewsCount = views($post)->count();
+        
         return view('post', [
             'post' => $post,
-            'views' => $viewsCount
         ]);
     }
 }

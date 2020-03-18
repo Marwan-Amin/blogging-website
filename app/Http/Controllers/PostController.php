@@ -13,7 +13,7 @@ class PostController extends Controller
         $this->post = new PostRepository($post);
     }
 
-    public function index() 
+    public function index()
     {
         return $this->post->index();
     }
@@ -41,5 +41,10 @@ class PostController extends Controller
     public function topViews()
     {
         return $this->post->topViews();
+    }
+
+    public function topVotes()
+    {
+        return $this->post->topVotes();
     }
 }

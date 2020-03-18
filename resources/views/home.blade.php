@@ -1,13 +1,11 @@
 @extends('layouts.app1')
 @section('content')
-
-
 <div class="container">
 
     <div class="row">
         <div class="col-md-3">
             <!-- User info -->
-            @guest 
+            @guest
             @else
             <div class="panel panel-default">
                 <div class="panel-body center-vertical">
@@ -44,13 +42,12 @@
                     </a>
                 </li>
                 @endforeach
-                {{ $users->links() }}
             </ul>
             <!-- /All Users -->
         </div>
 
         <div class="col-md-9">
-        @guest 
+            @guest
             @else
             <!-- Create Post -->
             <div class="panel panel-default user-post-panel">
@@ -65,9 +62,10 @@
                     </div>
 
                 </div>
+
                 <div class="panel-body">
                     <form method="post" action="/" enctype="multipart/form-data">
-                    @csrf
+                        @csrf
                         <textarea name="body" rows="5" class="form-control"></textarea>
                         <br>
                         <input name="post_image" type="file" class="hidden input-image" id="post-image">
@@ -84,9 +82,9 @@
             @endguest
             @isset($posts)
             <div class="btn-group mb-5" role="group" aria-label="Basic example">
-            <a  href="/posts/topViews" class="btn btn-secondary">Top views</a>
-            <a  href="/posts/recommended" class="btn btn-secondary">Recommended</a>
-            <a  href="/posts/topVoted" class="btn btn-secondary">Top voted</a>
+                <a href="/posts/topViews" class="btn btn-secondary">Top views</a>
+                <a href="/posts/recommended" class="btn btn-secondary">Recommended</a>
+                <a href="/posts/topVotes" class="btn btn-secondary">Top voted</a>
             </div>
             @endisset
             @foreach($posts as $post)
@@ -101,18 +99,19 @@
                             <h4 class="user-name ">{{$post->user->name}}</h4>
                             <small class="text-muted">
                                 <i class="fa fa-clock-o" aria-hidden="true"></i>
-                                {{$post->updated_at->diffForHumans()}}
+                                {{$post->updated_at->diffForHumans()}} / 
+                                <i class="fa  fa-eye"></i>
+                                Total views : {{views($post)->unique()->count()}}
                             </small>
                         </div>
 
                         <!-- Post control -->
-                        @auth 
+                        @auth
                         @if ($post->user_id === Auth::user()->id)
                         <div class="pull-right">
                             <!-- Single button -->
                             <div class="btn-group post-control">
-                                <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
+                                <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fa fa-cog" aria-hidden="true"></i>
                                 </button>
                                 <ul class="dropdown-menu">
@@ -123,14 +122,14 @@
                                     </li>
                                     <li role="separator" class="divider"></li>
                                     <li>
-                                    <form action="/posts/{{$post->id}}" method="POST" style="display:inline-block">
-                                     @csrf 
-                                    @method('DELETE') 
-                                    <button class="btn btn-inverse-danger btn-fw" type=submit onclick="return confirm('Are You Sure You Want To Delete This Record ?')" >
-                                    <i class="fa fa-trash fa-lg" aria-hidden="true"></i> Delete Post
-                                        </button> 
-                                    </form>
-                                        
+                                        <form action="/posts/{{$post->id}}" method="POST" style="display:inline-block">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-inverse-danger btn-fw" type=submit onclick="return confirm('Are You Sure You Want To Delete This Record ?')">
+                                                <i class="fa fa-trash fa-lg" aria-hidden="true"></i> Delete Post
+                                            </button>
+                                        </form>
+
                                     </li>
                                 </ul>
                             </div>
@@ -150,11 +149,11 @@
                                     </div>
                                     <div class="modal-body">
                                         <form action="{{route('update',['id'=>$post->id])}}" method="post" id="edit-post-id">
-                                        @csrf
-                                        @method('PATCH')
+                                            @csrf
+                                            @method('PATCH')
                                             <textarea name="body" rows="5" class="form-control">
                                             {{$post->body}}
-                                        </textarea>
+                                            </textarea>
                                             <br>
                                             <input type="file" class="hidden input-image" id="input-image-edit">
                                             <label for="input-image" class="upload-label" title="upload photo">
@@ -174,33 +173,31 @@
 
                         <!-- /Post control -->
                     </div>
-                    </div>
-<!-- Post content-->
-<div class="panel-body">
-    <img src="{{asset($post->blog_image)}}" class="img img-responsive">
-    <br>
-    <p>
-        {{$post->body}}
-    </p>
-    <a href="/post/{{$post->id}}" class="btn btn-success">Show post</a>
-    
-    <p>{{views($post)->count()}}</p>
-</div>
-<!-- /Post content-->
-
                 </div>
-                @endforeach 
-{{ $posts->links() }}
+                <!-- Post content-->
+                <div class="panel-body">
+                    <img src="{{asset($post->blog_image)}}" width=800px class="img img-responsive">
+                    <br>
+                    <p>
+                        {!! \Michelf\Markdown::defaultTransform($post->body) !!}
+                    </p>
+                    <a href="/posts/{{$post->id}}" class="btn btn-success">Show post</a>
+                </div>
+                <!-- /Post content-->
 
             </div>
-            
-            <!-- /User Posts -->
-            
+            @endforeach
+            {{ $posts->links() }}
 
         </div>
-        
+
+        <!-- /User Posts -->
+
 
     </div>
+
+
+</div>
 </div>
 
 @endsection('content')

@@ -19,13 +19,15 @@ Route::get('/', 'PostController@index')->name('index');
     Route::post('/', 'PostController@store');
     Route::delete('/posts/{id}', 'PostController@destroy');
     Route::patch('/posts/{id}', 'PostController@update')->name('update');
-    Route::get('/post/{id}', 'PostController@show')->name('show');
+    Route::get('/posts/{id}', 'PostController@show')->name('show');
 
     Route::get("/posts/topViews","PostController@topViews");
+    Route::get("/posts/topVotes","PostController@topVotes");
+
 
 
     Route::get('/post/{id}/like','ReactionController@like')->name('like');
-    Route::get('/post/{id}/dislike','ReactionController@dislike')->name('dislike');
+    Route::get('/post/{id}/dislike','ReactionController@unlike')->name('dislike');
 
 });
 

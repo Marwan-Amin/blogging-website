@@ -62,66 +62,6 @@
                         </form>
                     </div>
                 </li>
-
-                <!-- User Notifications -->
-                <li class="dropdown notification-dropdown">
-                    <a href="#" class="dropdown-toggle padding-20" data-toggle="dropdown" role="button"
-                       aria-haspopup="true" aria-expanded="false">
-                        <span class="label label-danger notifications-count">1</span>
-                        <i class="fa fa-bell fa-lg" aria-hidden="true"></i>
-                    </a>
-                    <ul class="dropdown-menu min-width-300">
-                        <li>
-                            <div class="notify-wrap">
-                                <div class="row">
-                                    <div class="col-xs-2">
-                                        <a href="#">
-                                            <img data-src="holder.js/50x50" class="img img-circle">
-                                        </a>
-                                    </div>
-                                    <div class="col-xs-10">
-                                        <div class="notify-text">
-                                            <small class="notify-date text-muted">
-                                                <i class="fa fa-clock-o" aria-hidden="true"></i>
-                                                3 hours ago
-                                            </small>
-                                            <a href="#">
-                                                <h4>Ahmed Fathy</h4>
-                                            </a>
-                                            <span>Added new comment on your post</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </li>
-                        <li>
-                            <div class="notify-wrap">
-                                <div class="row">
-                                    <div class="col-xs-2">
-                                        <a href="#">
-                                            <img data-src="holder.js/50x50" class="img img-circle">
-                                        </a>
-                                    </div>
-                                    <div class="col-xs-10">
-                                        <div class="notify-text">
-                                            <small class="notify-date text-muted">
-                                                <i class="fa fa-clock-o" aria-hidden="true"></i>
-                                                3 hours ago
-                                            </small>
-                                            <a href="#">
-                                                <h4>Ahmed Fathy</h4>
-                                            </a>
-                                            <span>Added new comment on your post</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </li>
-                    </ul>
-                </li>
-                <!-- /User Notifications -->
                 @endguest
             </ul>
         </div><!-- /.navbar-collapse -->
