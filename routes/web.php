@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,7 +13,12 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/', 'PostController@index')->name('index');
 
-Route::get('/', function () {
-    return view('welcome');
+Route::middleware(['auth','verified'])->group(function(){
+    Route::post('/', 'PostController@store');
+    Route::delete('/posts/{id}', 'PostController@destroy');
+    Route::patch('/posts/{id}', 'PostController@update')->name('update');
 });
+
+Auth::routes();

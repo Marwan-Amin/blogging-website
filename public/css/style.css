@@ -1,0 +1,94 @@
+.padding-20 {
+    padding: 20px !important;
+}
+
+.navbar-static-top .user-dropdown-toggle {
+    padding: 5px 10px !important;
+}
+
+.navbar-brand {
+    margin-top: 6px;
+}
+
+.notifications-count {
+    position: relative;
+    top: -10px;
+    left: 10px;
+}
+
+.dropdown-menu {
+    min-width: 250px;
+}
+
+.min-width-300 {
+    min-width: 300px !important;
+}
+
+.notify-wrap {
+    padding: 5px;
+}
+
+.notify-wrap .img-circle {
+    margin-top: 5px;
+}
+
+.notify-wrap .notify-text {
+    margin-left: 5px;
+}
+
+.notify-date {
+    position: absolute;
+    right: 15px;
+    top: -5px;
+}
+
+.notification-dropdown li {
+    border-bottom: 1px solid #ccc;
+    padding: 5px 0px;
+}
+
+.notification-dropdown li:last-child {
+    border-bottom: 0px;
+}
+
+.center-vertical {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-post-panel .panel-heading {
+    padding: 10px 15px;
+}
+
+.user-post-panel .panel-heading .user-avatar {
+    margin: 0 8px;
+}
+
+.user-post-panel .panel-heading .user-name {
+    margin: 5px 0px;
+}
+
+.like-btn {
+    margin-left: 10px;
+}
+
+.comments .media {
+    padding: 5px 0;
+}
+
+.login-container {
+    min-width: 500px;
+}
+
+.upload-label img {
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+}
+
+.post-control .dropdown-menu {
+    left: auto;
+    top: 85%;
+    right: 10px;
+}
