@@ -15,12 +15,15 @@
                         <i class="fa fa-clock-o" aria-hidden="true"></i>
                         {{$post->created_at->diffForHumans()}} / 
                                 <i class="fa  fa-eye"></i>
-                                Total views : {{views($post)->unique()->count()}} /
-                                <i class="fa fa-thumbs-up"></i> 
-                                 {{count($post->upvoters()->get())}} -
-                                 <i class="fa fa-thumbs-down"></i> 
-                                 {{count($post->downvoters()->get())}}
-                    </small>
+                                Total views : {{views($post)->unique()->count()}}
+                            </small>
+                            <br>
+                            <small class="text-muted">
+                                <i class="fa fa-thumbs-up"></i>
+                                {{count($post->upvoters()->get())}} &nbsp;
+                                <i class="fa fa-thumbs-down"></i>
+                                {{count($post->downvoters()->get())}}
+                            </small>
                 </div>
 
                 <!-- Post control -->
