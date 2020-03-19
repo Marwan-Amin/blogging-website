@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Post;
 use App\User;
-use Cog\Laravel\Love\ReactionType\Models\ReactionType;
-use Cog\Laravel\Love\Reacter\Models\Reacter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use \Overtrue\LaravelFollow\Traits\CanVote;
@@ -16,7 +14,13 @@ class ReactionController extends Controller
     {
         $user = Auth::user();
         $post = Post::find($id);
-        $user->upvote($post);
+
+        if($user->hasUpvoted($post)) 
+        {
+            $user->cancelVote($post);
+        } else {
+            $user->upvote($post);
+        }
 
         return redirect()->route('show',[
             'id' =>$post->id,
@@ -27,8 +31,13 @@ class ReactionController extends Controller
     {
         $user = Auth::user();
         $post = Post::find($id);
-        $user->downvote($post);
 
+        if($user->hasDownvoted($post)) 
+        {
+            $user->cancelVote($post);
+        } else {
+            $user->downvote($post);
+        }
         return redirect()->route('show',[
             'id' =>$post->id,
         ]);

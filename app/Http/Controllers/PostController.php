@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePost;
 use App\Post;
 use App\Repositories\PostRepository;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class PostController extends Controller
         return $this->post->index();
     }
 
-    public function store(Request $request)
+    public function store(StorePost $request)
     {
         return $this->post->store($request);
     }
@@ -38,13 +39,19 @@ class PostController extends Controller
         return $this->post->show($id);
     }
 
-    public function topViews()
+    public function views()
     {
-        return $this->post->topViews();
+        return $this->post->views();
     }
 
-    public function topVotes()
+    public function votes()
     {
-        return $this->post->topVotes();
+        return $this->post->votes();
     }
+
+    public function recommendPosts()
+    {
+        return $this->post->recommendPosts();
+    }
+
 }

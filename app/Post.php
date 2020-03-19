@@ -14,7 +14,7 @@ class Post extends Model implements Viewable
     use CanBeVoted;
 
     protected $fillable = [
-        'body', 'blog_image', 'user_id'
+        'body', 'blog_image', 'user_id','voting_rank','views_count'
     ];
 
     public function user()

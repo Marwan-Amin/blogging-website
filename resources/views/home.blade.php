@@ -64,6 +64,15 @@
                 </div>
 
                 <div class="panel-body">
+                @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
                     <form method="post" action="/" enctype="multipart/form-data">
                         @csrf
                         <textarea name="body" rows="5" class="form-control"></textarea>
@@ -81,10 +90,10 @@
             <!-- /Create Post -->
             @endguest
             @isset($posts)
-            <div class="btn-group mb-5" role="group" aria-label="Basic example">
-                <a href="/posts/topViews" class="btn btn-secondary">Top views</a>
-                <a href="/posts/recommended" class="btn btn-secondary">Recommended</a>
-                <a href="/posts/topVotes" class="btn btn-secondary">Top voted</a>
+            <div class="btn-group" role="group" aria-label="Basic example" style="padding: 10px;">
+                <a href="{{route('views')}}"> <button class="btn btn-primary">Top views</button> </a>
+                <a href="{{route('recommended')}}"><button class="btn btn-primary">recommended</button></a>
+                <a href="{{route('votes')}}"><button class="btn btn-primary">Top votes</button></a>
             </div>
             @endisset
             @foreach($posts as $post)
@@ -99,9 +108,13 @@
                             <h4 class="user-name ">{{$post->user->name}}</h4>
                             <small class="text-muted">
                                 <i class="fa fa-clock-o" aria-hidden="true"></i>
-                                {{$post->updated_at->diffForHumans()}} / 
+                                {{$post->created_at->diffForHumans()}} /
                                 <i class="fa  fa-eye"></i>
-                                Total views : {{views($post)->unique()->count()}}
+                                Total views : {{views($post)->unique()->count()}} /
+                                <i class="fa fa-thumbs-up"></i>
+                                {{count($post->upvoters()->get())}} -
+                                <i class="fa fa-thumbs-down"></i>
+                                {{count($post->downvoters()->get())}}
                             </small>
                         </div>
 
@@ -181,7 +194,7 @@
                     <p>
                         {!! \Michelf\Markdown::defaultTransform($post->body) !!}
                     </p>
-                    <a href="/posts/{{$post->id}}" class="btn btn-success">Show post</a>
+                    <a href="{{route('show',['id'=>$post->id])}}" class="btn btn-success">Show post</a>
                 </div>
                 <!-- /Post content-->
 

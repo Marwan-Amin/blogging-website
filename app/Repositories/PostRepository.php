@@ -2,18 +2,20 @@
 
 namespace App\Repositories;
 
+use App\Http\Requests\StorePost;
 use App\Post;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use \Overtrue\LaravelFollow\Traits\CanVote;
+
 
 class PostRepository implements PostRepositoryInterface
 {
     public function index()
     {
         $posts = Post::paginate(2);
-        $viewsCount =null;
 
         return view('home', [
             'posts' => $posts,
@@ -21,31 +23,73 @@ class PostRepository implements PostRepositoryInterface
         ]);
     }
 
-    public function topViews()
+    public function views()
     {
-        $posts = Post::paginate(2);
+        $topViewedPosts = Post::orderBy('views_count','desc')->orderBy('voting_rank','desc')->paginate(2);
 
         return view('home', [
-            'posts' => $posts,
+            'posts' => $topViewedPosts,
             'users' => User::all(),
         ]);
     }
 
-    public function topVotes()
+    public function votes()
     {
-        // dd(true);
-        // $allPosts = Post::paginate(2);
-        // dd($allPosts);
-        // $posts = $allPosts->upvoters()->orderByDesc('id')->get();
-        // dd($posts);
-        $posts = Post::paginate(2);
+        $posts = Post::all();
+        
+        foreach($posts as $post)
+        {
+            $upVoters = count($post->upvoters()->get());
+            $downVoters = count($post->downvoters()->get());
+            $votingRank = $upVoters - $downVoters;
+
+            Post::where('id',$post->id)->update([
+                'voting_rank' => $votingRank
+            ]);
+        }
+
+        $rankedPosts = Post::orderBy('voting_rank','desc')->paginate(2);
+        
         return view('home', [
-            'posts' => $posts,
+            'posts' => $rankedPosts,
             'users' => User::all(),
         ]);
     }
 
-    public function store(Request $request)
+    public function recommendPosts()
+    {
+        $posts = Post::all();
+        
+        foreach($posts as $post)
+        {
+            $votes = $post->voting_rank;
+            $views = $post->views_count;
+            if($votes != 0 || $views != 0)
+            {
+                $rank = ($votes / $views)*100;
+                
+                Post::where('id',$post->id)->update([
+                    'post_rank' => $rank
+                ]);
+            } else if ($votes === null && $views === null) {
+                $rank = 0;
+                Post::where('id',$post->id)->update([
+                    'post_rank' => $rank
+                ]);
+            }
+        }
+
+
+
+        $rankedPosts = Post::orderBy('post_rank','desc')->paginate(2);
+        
+        return view('home', [
+            'posts' => $rankedPosts,
+            'users' => User::all(),
+        ]);
+    }
+
+    public function store(StorePost $request)
     {
         $image='';
         if(request()->post_image){
@@ -84,7 +128,11 @@ class PostRepository implements PostRepositoryInterface
         $post = Post::find($id);
         $expiresAt = now()->addHours(24);
         views($post)->cooldown($expiresAt)->record();
-        
+        $postViewsCount = views($post)->unique()->count();;
+        Post::where('id',$post->id)->update([
+            'views_count' => $postViewsCount
+        ]);
+
         return view('post', [
             'post' => $post,
         ]);

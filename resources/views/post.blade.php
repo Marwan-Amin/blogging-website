@@ -13,9 +13,13 @@
                     <h4 class="user-name ">{{$post->user->name}}</h4>
                     <small class="text-muted">
                         <i class="fa fa-clock-o" aria-hidden="true"></i>
-                        {{$post->updated_at->diffForHumans()}} / 
+                        {{$post->created_at->diffForHumans()}} / 
                                 <i class="fa  fa-eye"></i>
-                                Total views : {{views($post)->unique()->count()}}
+                                Total views : {{views($post)->unique()->count()}} /
+                                <i class="fa fa-thumbs-up"></i> 
+                                 {{count($post->upvoters()->get())}} -
+                                 <i class="fa fa-thumbs-down"></i> 
+                                 {{count($post->downvoters()->get())}}
                     </small>
                 </div>
 
